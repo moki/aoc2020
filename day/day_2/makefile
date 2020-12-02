@@ -10,7 +10,7 @@ $(shell mkdir -p $(DEPDIR) >/dev/null)
 DEPFLAGS = -MT $@ -MMD -MP -MF $(DEPDIR)/$*.Td
 # CFLAGS = -std=c99 -D_POSIX_C_SOURCE -Wshadow -Wall -pedantic -Wextra -g -O3 -flto -pthread
 #CXXFLAGS = -std=c++1z -Wshadow -Wall -pedantic -Wextra -g -O3 -flto
-CXXFLAGS = -std=c++20 -Weverything -pedantic -g -O3 -flto=thin -mllvm -inline-threshold=1000 -fexperimental-new-pass-manager
+CXXFLAGS = -std=c++20 -Wc++20-compat -pedantic -g -O3 -flto=thin -mllvm -inline-threshold=1000 -fexperimental-new-pass-manager
 # -pthread -stdlib=libc++
 TARGET_ARCH =-march=native
 # LDFLAGS = -lpthread

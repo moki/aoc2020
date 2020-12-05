@@ -1,0 +1,26 @@
+#include <fstream>
+#include <iostream>
+
+/* gauss sum solution */
+int main(int argc, char **argv) {
+        std::fstream input(*++argv);
+        if (!input) {
+                exit(1);
+        }
+
+        auto sum = 0, max = 0, n = 0;
+
+        for (std::string line; std::getline(input, line); ++n) {
+                auto i = 0, id = 0;
+                for (auto j = 1 << 10; j >>= 1; i++) {
+                        id |= (line[i] == 'B' || line[i] == 'R') ? j : 0;
+                }
+
+                sum += id;
+                max = id > max ? id : max;
+        }
+
+        auto seat = ((max - (max - n) + 1) * ((max - n) + max)) / 2;
+
+        std::cout << max << std::endl << seat - sum << std::endl;
+}

@@ -9,13 +9,6 @@ typedef std::pair<std::string, size_t> bag;
 
 constexpr char *delimeter = const_cast<char *>(" bag");
 
-constexpr auto walk_until_digit = [](const auto &s) {
-        size_t i;
-        for (i = 0; s[i] && !isdigit(s[i]);)
-                i++;
-        return i;
-};
-
 std::vector<bag>
 parse_rule(std::string & line) {
         size_t pos = 0;
@@ -36,8 +29,9 @@ parse_rule(std::string & line) {
 
                 bags.push_back({rule, amount});
 
-                auto next = walk_until_digit(line);
-                line = line.substr(next);
+                for (pos = 0; line[pos] && !isdigit(line[pos]); pos++)
+                        ;
+                line = line.substr(pos);
         }
 
         return bags;
@@ -67,8 +61,6 @@ int main(int argc, char **argv) {
         auto lookup_bag = "shiny gold";
         auto found = 0;
 
-        /* part 1 */
-
         for (auto &path : paths) {
                 std::deque<bag> stack(path.second.begin(), path.second.end());
 
@@ -95,9 +87,6 @@ int main(int argc, char **argv) {
 
         found = 0;
         auto shiny_path = paths.find(lookup_bag);
-        if (shiny_path == paths.end())
-                exit(1);
-
         std::deque<bag> stack(shiny_path->second.begin(),
                               shiny_path->second.end());
 

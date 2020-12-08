@@ -45,6 +45,11 @@ int main(int argc, char **argv) {
         auto emu = Emulator(flags);
         errcode err;
 
+        std::vector<size_t> problematic{};
+        auto jmp = "jmp"s;
+        auto nop = "nop"s;
+        size_t pc = 0;
+
         for (std::string line; std::getline(input, line);) {
                 auto in = parse_instruction(line);
 
@@ -54,21 +59,12 @@ int main(int argc, char **argv) {
                                   << std::endl;
                         exit(1);
                 }
-        }
 
-        std::vector<size_t> problematic{};
-
-        auto code = emu.access_code();
-        size_t pc = 0;
-        for (auto &i : code) {
-                auto opcode = i.get_opcode_string();
-                if (opcode == "jmp" || opcode == "nop")
+                auto opcode = in.get_opcode_string();
+                if (opcode == jmp || opcode == nop)
                         problematic.push_back(pc);
                 pc++;
         }
-
-        auto jmp = "jmp"s;
-        auto nop = "nop"s;
 
         for (auto &pc : problematic) {
                 auto op = emu.access_instruction(pc).get_opcode_string();
